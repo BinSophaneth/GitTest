@@ -1,0 +1,2 @@
+# GitTest
+Stating with git
