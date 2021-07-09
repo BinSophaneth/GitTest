@@ -1,0 +1,39 @@
+.date-container {
+  color: red;
+  min-height: 100px;
+}
+td,
+th {
+  text-align: center;
+  padding: 10px;
+  max-width: 12px;
+  min-width: 8px;
+}
+td {
+  text-align: left;
+  border: 1px solid #dddddd;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #dddddd;
+}
+td.content {
+  background-color: #f2f2f2;
+}
+.date {
+  font-size: 14px;
+  word-wrap: break-word;
+  margin-bottom: 30px;
+}
+.edit {
+  background: chartreuse;
+  text-align: center;
+  font-size: 14px;
+}
+.flex {
+  word-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
