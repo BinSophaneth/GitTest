@@ -1,39 +1,211 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+body {
+  font-family: "Roboto", sans-serif;
+}
 .date-container {
-  color: red;
-  min-height: 100px;
+  font-weight: bold;
+}
+table {
+  table-layout: fixed;
+}
+td.date-container {
+  height: 153px;
+}
+thead {
+  background-color: #92d14f;
+  color: white;
+  font-size: 16px;
+  border: 1px solid #92d14f;
+}
+tbody {
+  border: 1px solid #dddddd;
+}
+h2 {
+  color: #92d14f;
 }
 td,
 th {
   text-align: center;
-  padding: 10px;
-  max-width: 12px;
-  min-width: 8px;
 }
 td {
   text-align: left;
   border: 1px solid #dddddd;
 }
-table {
-  border-collapse: collapse;
+.sunday {
+  color: #eb8e7a;
+}
+.btn-title {
+  position: relative;
+  display: block;
+  height: 40px;
+  white-space: nowrap;
+  text-align: left;
+  margin-bottom: 4px;
+  border: 0px solid #fff;
+  border-radius: 3px;
+  font-size: 13px;
+  color: #fff;
+  font-weight: bold;
+}
+input#colorPick {
+  cursor: pointer;
+}
+input#input-date {
+  margin-left: 18px;
+}
+.daterangepicker .calendar-table th,
+.daterangepicker .calendar-table td {
+  border-radius: 0 !important;
+}
+button.btn.btn-primary {
+  float: right;
+}
+button.btn.btn-secondary {
+  margin-right: 8px;
+  float: right;
+}
+form#myform {
+  margin-left: 45px;
+}
+.mid-day {
+  width: 115%;
+  left: -10px;
+}
+table.table.table-borderless {
+  overflow: hidden;
+}
+.one-day {
   width: 100%;
-  border: 1px solid #dddddd;
 }
-td.content {
-  background-color: #f2f2f2;
+.first-day {
+  width: 107%;
+  text-align: left;
 }
-.date {
-  font-size: 14px;
-  word-wrap: break-word;
-  margin-bottom: 30px;
+.last-day {
+  width: 106%;
+  left: -10px;
 }
-.edit {
-  background: chartreuse;
+.second-day {
+  width: 106%;
+  left: -10px;
+}
+.daterangepicker.show-calendar .drp-buttons {
+  display: none;
+}
+.drp-calendar.left.single {
+  margin-bottom: 10px;
+}
+img.colorpick-eyedropper-input-trigger {
+  display: none;
+}
+.hide {
+  display: none;
+}
+.drp-calendar.left.single {
+  margin-right: 2px;
+  margin-left: 2px;
+}
+.show-more {
   text-align: center;
-  font-size: 14px;
+  font-size: 13px;
+  margin-top: 6px;
+  color: #000;
 }
-.flex {
-  word-wrap: break-word;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.show-more:hover {
+  color: #92d14f;
+  cursor: pointer;
 }
+button.btnStyle {
+  text-align: left;
+  width: 100%;
+  border: none;
+  background-color: #c0c0c0;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+.row > * {
+  padding-left: 0;
+}
+@media (max-width: 1399.98px) {
+  .btn-title {
+    font-size: 12px;
+  }
+}
+@media (max-width: 1199.98px) {
+  h2 {
+    font-size: 22px;
+  }
+  thead {
+    font-size: 14px;
+  }
+  td.date-container {
+    height: 130px;
+    font-size: 14px;
+  }
+  .btn-title {
+    height: 35px;
+    font-size: 10px;
+  }
+  .first-day {
+    width: 110%;
+  }
+  .second-day {
+    width: 108.5%;
+  }
+}
+@media (max-width: 991.98px) {
+  h2 {
+    font-size: 18px;
+  }
+  thead {
+    font-size: 12px;
+  }
+  td.date-container {
+    height: 75px;
+    font-size: 10px;
+  }
+  .modal-body {
+    font-size: 12px;
+  }
+  .form-control {
+    font-size: 12px;
+  }
+  .btn-title {
+    height: 18px;
+    font-size: 10px;
+  }
+  .first-day {
+    width: 115%;
+  }
+  .second-day {
+    width: 112%;
+  }
+}
+@media (max-width: 767.98px) {
+  .first-day {
+    width: 120%;
+  }
+  .second-day {
+    width: 118%;
+  }
+  .btn-title {
+    height: 16px;
+  }
+}
+@media (max-width: 575.98px) {
+  thead {
+    font-size: 0.625rem;
+  }
+  td.date-container {
+    height: 60px;
+    font-size: 0.625rem;
+  }
+  .daterangepicker {
+    width: 45%;
+  }
+  input#colorPick {
+    height: 14px;
+    width: 34px;
+  }
+}
+
