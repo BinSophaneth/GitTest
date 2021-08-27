@@ -1,35 +1,265 @@
-if (ButtonEvents.length > 0) {
+let eventCounter = sessionStorage.getItem("eventCounter");
+if (!eventCounter) {
+  eventCounter = 0;
+}
+let moreCounter = sessionStorage.getItem("moreCounter");
+if (!moreCounter) {
+  moreCounter = 0;
+}
+let events = JSON.parse(sessionStorage.getItem("events"));
+if (!events) {
+  events = [];
+}
+for (let i = 0; i < events.length; i++) {
+  renderEvent(events[i]);
+}
+$("#exampleModal").on("hidden.bs.modal", function () {
+  $("#myform").trigger("reset");
+});
+function renderEvent(event) {
+  let startDate = moment(event.sdate, "DD/MM/YYYY");
+  let endDate = moment(event.edate, "DD/MM/YYYY");
+  let countdate = endDate.diff(startDate, "days");
+  let count = 17;
+  let resultTitle =
+    event.title.slice(0, count) + (event.title.length > count ? "..." : "");
+  let range = [];
+  for (let i = 0; i < countdate + 1; i++) {
+    range.push(startDate.format("DD/MM/YYYY"));
+    startDate.add(1, "days");
+  }
+  for (i = 0; i < range.length; i++) {
+    const buttonLength = $("div[date='" + range[i] + "']").children().length;
+    let ButtonEvents = [];
+    for (let k = 0; k < buttonLength; k++) {
+      let tmp = $("div[date='" + range[i] + "']")
+        .children()
+        .eq(k)
+        .attr("class");
+      if (tmp !== undefined) {
+        let tmpArr = tmp.split(" ").filter((O) => O.includes("event"));
+        ButtonEvents = ButtonEvents.concat(tmpArr);
+      }
+    }
+    // let checkSunday = moment(range[i], "DD/MM/YYYY").format("ddd");
+    let btntag = $(
+      '<button type="button" class="btn-title event-' +
+        event.eventId +
+        '" onclick="editEvent(' +
+        event.eventId +
+        ', event)"></button>'
+    );
+    if (i < range.length - 1 && i > 0) {
+      btntag.addClass("mid-day");
+    }
+    if (i == 0) {
+      if (range.length == 1) {
+        btntag.addClass("one-day");
+      } else {
+        btntag.addClass("first-day");
+      }
+      btntag.html(
+        "Title:" +
+          " " +
+          resultTitle +
+          "<br />" +
+          "Time:" +
+          " " +
+          event.shour +
+          " - " +
+          event.ehour
+      );
+    }
+    // Title matchMedia
+    let btnMedia = window.matchMedia("(max-width: 991.98px)");
+    if (btnMedia.matches && i == 0) {
+      let count = 12;
+      let resultTitle =
+        event.title.slice(0, count) + (event.title.length > count ? "..." : "");
+      btntag.html(resultTitle);
+    }
+    let mobileMedia = window.matchMedia("(max-width: 767.98px)");
+    if (mobileMedia.matches && i == 0) {
+      let count = 7;
+      let resultTitle =
+        event.title.slice(0, count) + (event.title.length > count ? "..." : "");
+      btntag.html(resultTitle);
+    }
+    let mobileMediaSm = window.matchMedia("(max-width: 575.98px)");
+    if (mobileMediaSm.matches) {
+      let count = 5;
+      let resultTitle =
+        event.title.slice(0, count) + (event.title.length > count ? "..." : "");
+      btntag.html(resultTitle);
+    }
+
+    if (i == range.length - 1 && i > 1) {
+      btntag.addClass("last-day");
+    }
+    if (range.length == 2 && i == 1) {
+      btntag.addClass("second-day");
+    }
+    let div = $("div[date='" + range[i] + "']");
+    if (ButtonEvents.length > 1) {
+      let more = ++moreCounter;
+      let btnMore =
+        '<div class="show-more" event=' + more + '">+' + more + " More </div>";
+      // let btnMore = "<div class='show-more' >+ More </div>";
+      btntag.addClass("hide");
+      div.append(btnMore);
+      $(".eventModal ol").append(
+        "<li><button class= 'btnStyle' > " +
+          "Title:" +
+          " " +
+          resultTitle +
+          "<br />" +
+          "Time:" +
+          " " +
+          event.shour +
+          " - " +
+          event.ehour +
+          " </button></li>"
+      );
+    }
+    if (ButtonEvents.length > 0) {
       for (var j = 0; j < ButtonEvents.length; j++) {
         const btnRange = $("div[date='" + range[i] + "']>button:eq(" + j + ")");
         const classEventName = ButtonEvents[j];
-        const IdArr = ButtonEvents[j].split("-");
-        let id1 = events[Number(IdArr[1]) - 1].eventId;
+        const sDate1Arr = ButtonEvents[j].split("-");
+        let id1 = events[Number(sDate1Arr[1]) - 1].eventId;
         let id2 = event.eventId;
-        const sDate1 = moment(events[Number(IdArr[1]) - 1].sdate, "DD/MM/YYYY");
-        const sDate2 = moment(event.sdate, "DD/MM/YYYY");
+        let sDate1 = moment(
+          events[Number(sDate1Arr[1]) - 1].sdate,
+          "DD/MM/YYYY"
+        );
+        let sDate2 = moment(event.sdate, "DD/MM/YYYY");
         if ($("." + classEventName).length < range.length) {
-          btnRange.before(btnApp.css("background-color", event.color));
+          btnRange.before(btntag.css("background-color", event.color));
           break;
-        } else if (j === ButtonEvents.length - 1) {
-          console.log("end", event.eventId, ButtonEvents[j]);
+        } else if (j == ButtonEvents.length - 1) {
           if ($("." + classEventName).length === range.length) {
             if (sDate1.isSameOrBefore(sDate2) && id1 < id2) {
-              console.log("id1 < id2", id1, id2, j);
-              btnRange.after(
-                btnApp.clone().css("background-color", event.color)
-              );
+              btnRange.after(btntag.css("background-color", event.color));
             } else {
-              console.log("id1 > id2", id1, id2);
-              btnRange.before(btnApp.css("background-color", event.color));
+              btnRange.before(btntag.css("background-color", event.color));
             }
           } else {
-            btnRange.after(btnApp.css("background-color", event.color));
+            btnRange.after(btntag.css("background-color", event.color));
           }
-        } else if ($("." + classEventName).length === range.length) {
-          if (sDate1.isSameOrBefore(sDate2) && id1 < id2) {
-            console.log("missing id1 < id2", id1, id2, j);
-            btnRange.after(btnApp.css("background-color", event.color));
-          } else {
-            console.log("missing id1 > id2", id1, id2);
-            btnRange.before(btnApp.css("background-color", event.color));
-          }
+        }
+      }
+    } else {
+      $("div[date='" + range[i] + "']").append(
+        btntag.css("background-color", event.color)
+      );
+    }
+  }
+}
+// $(window).resize(function () {
+//   location.reload();
+// });
+$("#myform").submit(function (e) {
+  e.preventDefault();
+  let updateEvent = $("#updateEvent").val();
+  if (updateEvent == "") {
+    let event = {
+      eventId: ++eventCounter,
+      title: $("#inputTitle").val(),
+      type: $("#inputGroupSelect").val(),
+      reason: $("#message-text").val(),
+      sdate: $("#start-date").val(),
+      shour: $("#start-hour").val(),
+      edate: $("#end-date").val(),
+      ehour: $("#end-hour").val(),
+      color: $("#colorPick").val(),
+    };
+    events.push(event);
+    renderEvent(event);
+  } else {
+    let objIndex = events.findIndex((obj) => obj.eventId == updateEvent);
+    events[objIndex].title = $("#inputTitle").val();
+    events[objIndex].type = $("#inputGroupSelect").val();
+    events[objIndex].reason = $("#message-text").val();
+    events[objIndex].sdate = $("#start-date").val();
+    events[objIndex].shour = $("#start-hour").val();
+    events[objIndex].edate = $("#end-date").val();
+    events[objIndex].ehour = $("#end-hour").val();
+    events[objIndex].color = $("#colorPick").val();
+    $(".event-" + updateEvent).remove();
+    renderEvent(events[objIndex]);
+  }
+  sessionStorage.setItem("events", JSON.stringify(events));
+  sessionStorage.setItem("eventCounter", eventCounter);
+});
+$(".date-container").dblclick(function () {
+  $("#exampleModal").modal("toggle");
+  $("#updateEvent").val("");
+  let startDate = $(this).children(0).attr("date");
+  $("#start-date").val(startDate);
+  let endDate = $(this).children(0).attr("date");
+  $("#end-date").val(endDate);
+  $('input[name="daterange"]').daterangepicker({
+    locale: {
+      format: "DD/MM/YYYY",
+      cancelLabel: "Clear",
+    },
+    singleDatePicker: true,
+    autoUpdateInput: true,
+    minDate: "29/03/2020",
+    maxDate: "02/05/2020",
+  });
+  $('input[name="daterange"]').on("cancel.daterangepicker", function () {
+    $(this).val("");
+  });
+  $('input[name="timepicker"]')
+    .daterangepicker({
+      timePicker: true,
+      singleDatePicker: true,
+      timePickerIncrement: 1,
+      locale: {
+        format: "h:mm A",
+      },
+    })
+    .on("show.daterangepicker", function (ev, picker) {
+      picker.container.find(".calendar-table").hide();
+    });
+});
+function editEvent(eventId, e) {
+  e.stopPropagation();
+  $("#exampleModal").modal("toggle");
+  let event = events.find((event) => event.eventId == eventId);
+  $("#updateEvent").val(eventId);
+  $("#inputTitle").val(event.title);
+  $("#inputGroupSelect").val(event.type);
+  $("#message-text").val(event.reason);
+  $("#start-date").val(event.sdate);
+  $("#start-hour").val(event.shour);
+  $("#end-date").val(event.edate);
+  $("#end-hour").val(event.ehour);
+  $("#colorPick").val(event.color);
+  $('input[name="daterange"]').daterangepicker({
+    locale: {
+      format: "DD/MM/YYYY",
+    },
+    singleDatePicker: true,
+    autoUpdateInput: true,
+    minDate: "29/03/2020",
+    maxDate: "02/05/2020",
+  });
+  $('input[name="timepicker"]')
+    .daterangepicker({
+      timePicker: true,
+      singleDatePicker: true,
+      timePickerIncrement: 1,
+      locale: {
+        format: "h:mm A",
+      },
+    })
+    .on("show.daterangepicker", function (ev, picker) {
+      picker.container.find(".calendar-table").hide();
+    });
+}
+$(".show-more").on("click", function () {
+  $("#staticBackdrop").modal("show");
+  // $(".btn-title").removeClass("hide");
+});
